@@ -1,4 +1,4 @@
-export function App() {
+export const App = (): JSX.Element => {
   const getResponse = async () => {
     const response = await fetch('http://localhost:8000/api/hello/');
     const message = await response.json();
