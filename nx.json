@@ -1,16 +1,94 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
-    "production": [
-      "default"
-    ],
-    "sharedGlobals": [
-      "{workspaceRoot}/.github/workflows/ci.yml"
-    ]
+  "projects": {
+    "backend": {
+      "root": "backend",
+      "targets": {
+        "serve": {
+          "executor": "nx:run-commands",
+          "options": {
+            "command": "docker-compose up -d"
+          }
+        },
+        "migrate": {
+          "executor": "nx:run-commands",
+          "options": {
+            "command": "docker-compose exec backend poetry run python manage.py migrate"
+          }
+        }
+      }
+    },
+    "frontend": {
+      "root": "frontend",
+      "targets": {
+        "serve": {
+          "executor": "nx:run-commands",
+          "options": {
+            "command": "pnpm --filter=frontend dev"
+          }
+        },
+        "build": {
+          "executor": "nx:run-commands",
+          "options": {
+            "command": "pnpm --filter=frontend build"
+          }
+        }
+      }
+    }
   },
-  "nxCloudId": "67a69970dafa241db9c88a74"
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "production": [
+      "default",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/src/test-setup.[jt]s",
+      "!{projectRoot}/.eslintrc.json",
+      "!{projectRoot}/eslint.config.mjs"
+    ],
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
+  },
+  "nxCloudId": "67a69970dafa241db9c88a74",
+  "plugins": [
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "testTargetName": "test",
+        "serveTargetName": "serve",
+        "devTargetName": "dev",
+        "previewTargetName": "preview",
+        "serveStaticTargetName": "serve-static",
+        "typecheckTargetName": "typecheck",
+        "buildDepsTargetName": "build-deps",
+        "watchDepsTargetName": "watch-deps"
+      }
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    },
+    {
+      "plugin": "@nxlv/python"
+    }
+  ],
+  "generators": {
+    "@nx/react": {
+      "application": {
+        "babel": true,
+        "style": "tailwind",
+        "linter": "eslint",
+        "bundler": "vite"
+      },
+      "component": {
+        "style": "tailwind"
+      },
+      "library": {
+        "style": "tailwind",
+        "linter": "eslint"
+      }
+    }
+  }
 }
