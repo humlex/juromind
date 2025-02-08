@@ -32,6 +32,12 @@
           "options": {
             "command": "pnpm --filter=frontend build"
           }
+        },
+        "lint": {
+          "executor": "nx:run-commands",
+          "options": {
+            "command": "pnpm --filter=frontend eslint src"
+          }
         }
       }
     }
