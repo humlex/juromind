@@ -10,7 +10,7 @@ services:
       db:
         condition: service_healthy
     env_file:
-      - ./backend/.env
+      - .env
     volumes:
       - ./backend:/app
 
@@ -18,18 +18,16 @@ services:
     image: postgres:16
     container_name: postgres_db
     restart: always
-    env_file:
-      - ./backend/.env
     environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_HOST_AUTH_METHOD=trust # 💡 Теперь не требует пароль
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: juro_db
     ports:
       - '5432:5432'
     volumes:
       - pg_data:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER} -d ${DB_NAME}']
+      test: ['CMD-SHELL', 'pg_isready -U admin -d juro_db']
       interval: 5s
       retries: 5
 
