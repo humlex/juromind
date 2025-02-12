@@ -8,8 +8,11 @@
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.5.1",
+    "query": "link:@reduxjs/toolkit/query",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "react-redux": "^9.2.0"
   },
   "devDependencies": {
     "@nx/eslint-plugin": "20.4.2",

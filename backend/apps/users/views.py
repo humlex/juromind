@@ -35,16 +35,16 @@ class UserDetailView(APIView):
 class LoginView(AuthViewMixin, APIView):
     @csrf_protect
     def post(self, request):
-        username = request.data.get('username')
+        email = request.data.get('email')
         password = request.data.get('password')
         
-        if not username or not password:
+        if not email or not password:
             return Response(
-                {'error': 'Please provide both username and password'},
+                {'error': 'Please provide both email and password'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        user = User.objects.filter(username=username).first()
+        user = User.objects.filter(email=email).first()
         
         if user and user.check_password(password):
             login(request, user)
