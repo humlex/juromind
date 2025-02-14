@@ -1,38 +1,24 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
-interface User {
-  id: number;
-  username: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  bio?: string;
-  avatar?: string;
-}
-
-interface LoginRequest {
-  email: string;
-  password: string;
-}
-
-interface RegisterRequest {
-  username: string;
-  email: string;
-  password: string;
-  password2: string;
-  first_name: string;
-  last_name: string;
-}
-
-interface AuthResponse {
-  user: User;
-  token: string;
-}
+import Cookies from 'js-cookie';
+import { AuthResponse, LoginRequest, RegisterRequest, User } from '../types';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api/' }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'http://localhost:8000/api/',
+    credentials: 'include',
+    prepareHeaders: (headers) => {
+      const csrfToken = Cookies.get('csrftoken');
+      if (csrfToken) {
+        headers.set('X-CSRFToken', csrfToken);
+      }
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
+    getCSRFToken: builder.query<{ success: boolean; message: string }, void>({
+      query: () => 'auth/csrf/',
+    }),
     login: builder.mutation<AuthResponse, LoginRequest>({
       query: (credentials) => ({
         url: 'auth/login/',
@@ -64,4 +50,5 @@ export const {
   useRegisterMutation,
   useLogoutMutation,
   useGetUserQuery,
+  useGetCSRFTokenQuery,
 } = authApi;

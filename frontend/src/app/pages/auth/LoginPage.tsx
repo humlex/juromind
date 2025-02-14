@@ -1,6 +1,16 @@
 import { FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  useLoginMutation,
+  useGetCSRFTokenQuery,
+} from '../../features/auth/api/auth.api';
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
+  const [login, { isLoading }] = useLoginMutation();
+
+  useGetCSRFTokenQuery();
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -8,8 +18,12 @@ export const LoginPage = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // TODO: Implement login logic here
-    console.log('Login form submitted:', formData);
+    try {
+      await login(formData).unwrap();
+      navigate('/');
+    } catch (err) {
+      console.error('Failed to login:', err);
+    }
   };
 
   return (
@@ -61,9 +75,10 @@ export const LoginPage = () => {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              disabled={isLoading}
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400 disabled:cursor-not-allowed"
             >
-              Sign in
+              {isLoading ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
         </form>

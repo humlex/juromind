@@ -3,8 +3,8 @@ from . import views
 
 urlpatterns = [
     path('register/', views.RegisterView.as_view(), name='register'),
-    path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
-    path('profile/', views.UserDetailView.as_view(), name='profile'),
-    path('get-csrf-token/', views.GetCSRFToken.as_view(), name='get-csrf-token')
+    path('login/', views.LoginView.as_view(), name='login'),
+    path('logout/', views.LogoutView.as_view(), name='logout'),
+    path('user/', views.UserDetailView.as_view(), name='user'),
+    path('csrf/', views.GetCSRFToken.as_view(), name='csrf')
 ]

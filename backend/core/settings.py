@@ -71,6 +71,12 @@ CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") if os.ge
 
 CORS_ALLOW_CREDENTIALS = True 
 
+CSRF_TRUSTED_ORIGINS = ["http://localhost:4200"]
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",") if os.getenv("CSRF_TRUSTED_ORIGINS") else ["http://localhost:4200"]
+CSRF_COOKIE_SAMESITE = "Lax"  
+CSRF_COOKIE_SECURE = False  
+CSRF_COOKIE_HTTPONLY = False  
+
 if not CORS_ALLOWED_ORIGINS and DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
 
