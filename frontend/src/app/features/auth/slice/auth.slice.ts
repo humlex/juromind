@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 import { AuthState, User } from '../types';
 
-const API_URL = 'http://localhost:8000/api';
+export const API_URL = 'http://localhost:8000/api';
 
 export const fetchCsrfToken = createAsyncThunk(
   'auth/fetchCsrfToken',

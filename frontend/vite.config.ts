@@ -16,10 +16,15 @@ export default defineConfig({
     host: 'localhost',
   },
   plugins: [react(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md'])],
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ nxViteTsPaths() ],
-  // },
+  resolve: {
+    alias: {
+      src: '/src',
+      components: '/src/app/components',
+      features: '/src/app/features',
+      pages: '/src/app/pages',
+      types: '/src/app/types',
+    },
+  },
   build: {
     outDir: '../dist/frontend',
     emptyOutDir: true,
