@@ -35,6 +35,15 @@ export const DocumentsPage = () => {
     }
   };
 
+  const handleDownload = (fileUrl: string, title: string) => {
+    const anchor = document.createElement('a');
+    anchor.href = fileUrl;
+    anchor.download = title + '.docx';
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+  };
+
   return (
     <div className="min-h-full py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md mx-auto">
@@ -95,10 +104,19 @@ export const DocumentsPage = () => {
           ) : (
             <ul className="mt-4 space-y-2">
               {documents?.map((doc) => (
-                <li key={doc.id} className="p-2 bg-gray-100 rounded-md">
-                  {doc.title}
+                <li
+                  key={doc.id}
+                  className="p-2 bg-gray-100 rounded-md flex justify-between items-center"
+                >
+                  <span>{doc.title}</span>
+                  <button
+                    onClick={() => handleDownload(doc.file, doc.title)}
+                    className="text-blue-600 hover:underline"
+                  >
+                    Download
+                  </button>
                 </li>
-              ))}            
+              ))}
             </ul>
           )}
         </div>

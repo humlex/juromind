@@ -6,12 +6,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-1kj=5a-###%8-@)^$^tcv@h048!cz)snvh6=z")
-
 DEBUG = os.getenv("DEBUG", "").lower() in ["1", "true", "yes"]
-
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",") if os.getenv("ALLOWED_HOSTS") else ["localhost"]
+
+MEDIA_URL = "/media/"  
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 INSTALLED_APPS = [
     "corsheaders",

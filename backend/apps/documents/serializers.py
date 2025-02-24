@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Document
+from django.conf import settings
 
 class DocumentSerializer(serializers.ModelSerializer):
     owner_email = serializers.EmailField(source='owner.email', read_only=True)
@@ -12,7 +13,7 @@ class DocumentSerializer(serializers.ModelSerializer):
 
     def get_file_url(self, obj):
         if obj.file:
-            return obj.file.url
+             return settings.MEDIA_URL + str(obj.file)
         return None
 
     def validate_title(self, value):
